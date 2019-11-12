@@ -363,7 +363,7 @@ def main():
                             gameStart = True
                         else:
                             if btn.text == "Easy":
-                                difficulty = 12
+                                difficulty = 5
                                 clickedDif = True
                             elif btn.text == "Medium":
                                 difficulty = 15
