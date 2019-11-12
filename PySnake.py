@@ -335,7 +335,7 @@ def main():
         if clickedDif == False:
             topStar.draw(screen, starPosMed)
         else:
-            if difficulty == 12:
+            if difficulty == 10:
                 topStar.draw(screen, starPosEasy)
             elif difficulty == 15:
                 topStar.draw(screen, starPosMed)
@@ -363,7 +363,7 @@ def main():
                             gameStart = True
                         else:
                             if btn.text == "Easy":
-                                difficulty = 12
+                                difficulty = 10
                                 clickedDif = True
                             elif btn.text == "Medium":
                                 difficulty = 15
@@ -391,20 +391,21 @@ def main():
             winMessage = smallFont.render(f"You won, amazing! Score: {len(snake.tail) - 1}", True, red)
             deadMessage = smallFont.render(f"You died! Score: {len(snake.tail) - 1}", True, white)
 
+            # changed this from using get_pressed so it will be responsive at low fps (difficulty)
+            # loops through all events and changes snake direction, snake will be physically moved in snake.move
+            pygame.event.pump()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
-
-            # constantly (determined by fps) looking for key presses
-            pressed = pygame.key.get_pressed()
-            if pressed[pygame.K_UP] or pressed[pygame.K_w]:
-                snake.dir = 'up'
-            if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
-                snake.dir = 'right'
-            if pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
-                snake.dir = 'down'
-            if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
-                snake.dir = 'left'
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP or event.key == pygame.K_w:
+                        snake.dir = 'up'
+                    if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                        snake.dir = 'right'
+                    if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                        snake.dir = 'down'
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                        snake.dir = 'left'
 
             # moves the snake in its direction until another key is pressed that changes it
             snake.move(snake.dir)
