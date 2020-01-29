@@ -23,6 +23,15 @@ white = pygame.Color(255, 255, 255)
 gray = pygame.Color(180, 180, 180)
 red = pygame.Color(255, 0, 0)
 
+#problem is that this function is always going to exception??
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 # each tail / head piece are segment class instances with their own positions
 class Segment():
     def __init__(self, pos):
@@ -196,7 +205,9 @@ class Button(pygame.sprite.Sprite):
     def __init__(self, text, path):
         pygame.sprite.Sprite.__init__(self)
         self.text = text
-        self.image = pygame.image.load(path).convert()
+        print (resource_path(path))
+        #erase print
+        self.image = pygame.image.load(resource_path(path)).convert_alpha()
         self.rect = self.image.get_rect()
 
         pygame.font.init()
@@ -219,7 +230,7 @@ class Button(pygame.sprite.Sprite):
 class Star(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("resources\gold_star.png").convert_alpha()
+        self.image = pygame.image.load(resource_path("resources\gold_star.png")).convert_alpha()
         self.image = pygame.transform.scale(self.image, (50, 50))
 
     def draw(self, surface, pos):
@@ -298,6 +309,7 @@ def main():
     # difficulty and wall mode sliders are set to defaults and do not break loop
     clickedDif = False
     clickedMode = False
+
     while not gameStart:
 
         screen.fill((0, 0, 0))
